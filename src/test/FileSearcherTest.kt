@@ -1,6 +1,8 @@
+package test
+
+import FileSearcher
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import java.io.File
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Files
 import java.nio.file.Path
@@ -10,8 +12,8 @@ internal class FileSearcherTest {
     @Test
     fun testFindFiles(@TempDir dir: Path) {
         val fourCh = dir.resolve("4CH")
-        val folder1 = fourCh.resolve("folder1")
-        val folder2 = fourCh.resolve("folder2")
+        val folder1 = fourCh.resolve("FOLDER01")
+        val folder2 = fourCh.resolve("FOLDER02")
         Files.createDirectory(fourCh)
         Files.createDirectory(folder1)
         Files.createDirectory(folder2)
@@ -40,6 +42,6 @@ internal class FileSearcherTest {
         actual.add(targetFileXY21.toString())
 
         val fileSearcher = FileSearcher()
-        assertIterableEquals(fileSearcher.find(dir), actual);
+        assertIterableEquals(fileSearcher.find(dir.toFile()), actual);
     }
 }

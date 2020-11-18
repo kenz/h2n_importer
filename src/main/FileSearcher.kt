@@ -1,12 +1,10 @@
 import main.H2nFilter
 import java.io.File
-import java.nio.file.Path
 
-@Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class FileSearcher {
-    fun find(path: Path):List<String>{
+    fun find(path: File):List<String>{
         val h2nFilter= H2nFilter()
-        return getFiles(path.toFile()).filter{
+        return getFiles(path).filter{
             h2nFilter.filter(it)
         }.sorted()
     }
@@ -17,7 +15,7 @@ class FileSearcher {
             fileList.add((file.path))
         }
         if(file.isDirectory){
-            file.listFiles().forEach{
+            file.listFiles()?.forEach{
                 fileList.addAll(getFiles(it))
             }
         }
