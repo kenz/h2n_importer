@@ -1,38 +1,44 @@
 package main
 
+import java.io.Console
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
 class FileNameConverter(file: File) {
-    val lastUpdatedDateTime: String
-    val lastUpdatedDate: String
     val originalFileName: String
     val folderNumnber: Int
     val inMic: Boolean
     val outMic: Boolean
-    val year:Int
-    val month:Int
-    val day:Int
+    val year: Int
+    val month: Int
+    val day: Int
 
-    val hour:Int
-    val minute:Int
-    val second:Int
+    val hour: Int
+    val minute: Int
+    val second: Int
+
     init {
-        year = 0
-        month = 0
-        day= 0
-        hour = 0
-        minute = 0
-        second = 0
-        folderNumnber = 0
         originalFileName = file.name
         val cal = Calendar.getInstance()
         cal.time = Date(file.lastModified())
-        lastUpdatedDateTime = DATE_TIME_SDF.format(file.lastModified())
-        lastUpdatedDate = DATE_SDF.format(file.lastModified())
         inMic = MS_REGEX.matches(originalFileName)
         outMic = XY_REGEX.matches(originalFileName)
+        year = cal.get(Calendar.YEAR)
+        month = cal.get(Calendar.MONTH)
+        day = cal.get(Calendar.DAY_OF_MONTH)
+        hour = cal.get(Calendar.HOUR_OF_DAY)
+        minute = cal.get(Calendar.MINUTE)
+        second = cal.get(Calendar.SECOND)
+        val path = file.path.split("/")
+        val dirName = path[path.size - 2]
+        val dirNumberStr = dirName.replace(NOT_NUMBER_REGEX, "")
+        folderNumnber = try {
+            dirNumberStr.toInt()
+        } catch (e: Exception) {
+            print(e)
+            0
+        }
 
     }
 
@@ -42,6 +48,7 @@ class FileNameConverter(file: File) {
         private val DATE_SDF = SimpleDateFormat("yyyyMMdd")
         private val MS_REGEX = Regex(".*MS\\.WAV")
         private val XY_REGEX = Regex(".*XY\\.WAV")
+        private val NOT_NUMBER_REGEX = Regex("[^0-9]")
 
     }
 }
