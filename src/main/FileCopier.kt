@@ -5,6 +5,12 @@ import java.io.File
 
 
 class FileCopier {
+    /**
+     * Make directory and Copy files from H2n to PC
+     * @param files copy files
+     * @param outputDir destination
+     *
+     */
     fun copyFiles(files: List<String>, outputDir: File) {
         val fileInfoList = files.map {
             FileNameConverter(File(it))
@@ -12,6 +18,7 @@ class FileCopier {
         fileInfoList.forEach {
             it.directoryName = makeDir(outputDir, it.directoryName)
         }
+        //todo: Copy file
 
     }
     /**
@@ -25,9 +32,14 @@ class FileCopier {
     /**
      * Make directory if it is not existed
      * If a file with the same name as Directory exists, add a number to the Directory name.
-     * @param parentDir make directory in to the parentDirD
+     * ex make directory as /foo/bar (1) if foo/bar **FILE** is exist.
+     *
+     * @param parentDir make directory in to the parentDir
+     * ex: make directory /foo/2019-05-01 (1) if set /foo
      * @param dirName name of make directory name
+     * ex: make directory /foo/2019-05-01 (1)if set 2019-05-01
      * @param index Should set null
+     * this parameter set by only itself
      * @return created(or existed) directory name
      */
     private fun makeDirIndex(parentDir: File, dirName:String, index:Int? = null):String{
