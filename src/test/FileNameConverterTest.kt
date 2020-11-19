@@ -37,22 +37,23 @@ internal class FileNameConverterTest {
         val fileNameConverterMS21 = FileNameConverter(targetFileMS21File)
         val fileNameConverterXY21 = FileNameConverter(targetFileXY21File)
 
-        assertEquals(fileNameConverterMS11.mic, MicType.In)
-        assertEquals(fileNameConverterXY11.mic, MicType.Out)
+        assertEquals(fileNameConverterMS11.forceGetValue("mic"), MicType.In)
+        assertEquals(fileNameConverterXY11.forceGetValue("mic"), MicType.Out)
 
-        assertEquals(fileNameConverterMS21.mic, MicType.In)
-        assertEquals(fileNameConverterXY21.mic, MicType.Out)
+        assertEquals(fileNameConverterMS21.forceGetValue("mic"), MicType.In)
+        assertEquals(fileNameConverterXY21.forceGetValue("mic"), MicType.Out)
 
-        assertEquals(fileNameConverterMS11.folderNumber, 1)
-        assertEquals(fileNameConverterXY11.folderNumber, 1)
-        assertEquals(fileNameConverterMS21.folderNumber, 2)
-        assertEquals(fileNameConverterXY21.folderNumber, 2)
+        assertEquals(fileNameConverterMS11.forceGetValue("directoryNumber"), 1)
+        assertEquals(fileNameConverterXY11.forceGetValue("directoryNumber"), 1)
+        assertEquals(fileNameConverterMS21.forceGetValue("directoryNumber"), 2)
+        assertEquals(fileNameConverterXY21.forceGetValue("directoryNumber"), 2)
 
-        assertEquals(fileNameConverterMS11.nameWithoutExtension, "SR001MS")
-        assertEquals(fileNameConverterXY11.nameWithoutExtension, "SR001XY")
-        assertEquals(fileNameConverterMS21.nameWithoutExtension, "SR001MS")
-        assertEquals(fileNameConverterXY21.nameWithoutExtension, "SR001XY")
-        assertEquals(fileNameConverterMS11.updatedDate.fileNameString(), "20190501_020304")
+        assertEquals(fileNameConverterMS11.forceGetValue("nameWithoutExtension"), "SR001MS")
+        assertEquals(fileNameConverterXY11.forceGetValue("nameWithoutExtension"), "SR001XY")
+        assertEquals(fileNameConverterMS21.forceGetValue("nameWithoutExtension"), "SR001MS")
+        assertEquals(fileNameConverterXY21.forceGetValue("nameWithoutExtension"), "SR001XY")
+        val c:Calendar = fileNameConverterMS11.forceGetValue("updatedDate")
+        assertEquals(c.fileNameString(), "20190501_020304")
         assertEquals(fileNameConverterMS11.directoryName, "2019-05-01")
 
 
