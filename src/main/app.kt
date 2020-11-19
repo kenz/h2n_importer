@@ -1,7 +1,5 @@
-import main.FileCopier
+package main
 import java.io.File
-import java.nio.file.Path
-import java.text.SimpleDateFormat
 
 fun main(args: Array<String>) {
     val outputPath = File(getArgs(args, 0,  "./" ))

@@ -1,4 +1,4 @@
-import main.H2nFilter
+package main
 import java.io.File
 
 class FileSearcher {

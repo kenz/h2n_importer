@@ -1,6 +1,6 @@
 package test
 
-import getArgs
+import main.getArgs
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
