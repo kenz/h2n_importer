@@ -4,6 +4,7 @@ import main.FileSearcher
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -33,13 +34,13 @@ internal class FileSearcherTest {
         val ignoreFileXY1 = folder1.resolve("RR001XY.WAV")
         Files.createFile(ignoreFileMS1)
         Files.createFile(ignoreFileXY1)
-        val actual = ArrayList<String>()
-        actual.add(targetFileMS11.toString())
-        actual.add(targetFileXY11.toString())
-        actual.add(targetFileMS12.toString())
-        actual.add(targetFileXY12.toString())
-        actual.add(targetFileMS21.toString())
-        actual.add(targetFileXY21.toString())
+        val actual = ArrayList<File>()
+        actual.add(targetFileMS11.toFile())
+        actual.add(targetFileXY11.toFile())
+        actual.add(targetFileMS12.toFile())
+        actual.add(targetFileXY12.toFile())
+        actual.add(targetFileMS21.toFile())
+        actual.add(targetFileXY21.toFile())
 
         val fileSearcher = FileSearcher()
         assertIterableEquals(fileSearcher.find(dir.toFile()), actual);
