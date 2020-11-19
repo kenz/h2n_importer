@@ -1,13 +1,12 @@
 package main
 
-import java.io.Console
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
 class FileNameConverter(file: File) {
-    val originalFileName: String
-    val folderNumnber: Int
+    val nameWithoutExtension: String
+    val folderNumber: Int
     val inMic: Boolean
     val outMic: Boolean
     val year: Int
@@ -17,13 +16,19 @@ class FileNameConverter(file: File) {
     val hour: Int
     val minute: Int
     val second: Int
+    private var _directoryName: String? = null
+    var directoryName: String
+        get() = _directoryName ?: "%04d%02d%02d".format(year, month, day)
+        set(value) {
+            _directoryName = value
+        }
 
     init {
-        originalFileName = file.name
+        nameWithoutExtension = file.nameWithoutExtension
         val cal = Calendar.getInstance()
         cal.time = Date(file.lastModified())
-        inMic = MS_REGEX.matches(originalFileName)
-        outMic = XY_REGEX.matches(originalFileName)
+        inMic = MS_REGEX.matches(file.name)
+        outMic = XY_REGEX.matches(file.name)
         year = cal.get(Calendar.YEAR)
         month = cal.get(Calendar.MONTH)
         day = cal.get(Calendar.DAY_OF_MONTH)
@@ -33,15 +38,13 @@ class FileNameConverter(file: File) {
         val path = file.path.split("/")
         val dirName = path[path.size - 2]
         val dirNumberStr = dirName.replace(NOT_NUMBER_REGEX, "")
-        folderNumnber = try {
+        folderNumber = try {
             dirNumberStr.toInt()
         } catch (e: Exception) {
             print(e)
             0
         }
-
     }
-
 
     companion object {
         private val DATE_TIME_SDF = SimpleDateFormat("yyyyMMdd_HHmmss")

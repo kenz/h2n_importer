@@ -4,9 +4,9 @@ import java.nio.file.Path
 import java.text.SimpleDateFormat
 
 fun main(args: Array<String>) {
-    val outputPath = getArgs(args, 0,  "./" )
-    val inputPath = getArgs(args, 1,  "/Volumes/H2n_sd" )
-    val files = FileSearcher().find(File(inputPath))
+    val outputPath = File(getArgs(args, 0,  "./" ))
+    val inputPath = File(getArgs(args, 1,  "/Volumes/H2n_sd" ))
+    val files = FileSearcher().find(inputPath)
     FileCopier().copyFiles(files, outputPath)
 
 

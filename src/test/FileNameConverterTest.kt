@@ -44,21 +44,22 @@ internal class FileNameConverterTest {
         assertFalse(fileNameConverterXY21.inMic)
         assertTrue(fileNameConverterXY21.outMic)
 
-        assertEquals(fileNameConverterMS11.folderNumnber, 1)
-        assertEquals(fileNameConverterXY11.folderNumnber, 1)
-        assertEquals(fileNameConverterMS21.folderNumnber, 2)
-        assertEquals(fileNameConverterXY21.folderNumnber, 2)
+        assertEquals(fileNameConverterMS11.folderNumber, 1)
+        assertEquals(fileNameConverterXY11.folderNumber, 1)
+        assertEquals(fileNameConverterMS21.folderNumber, 2)
+        assertEquals(fileNameConverterXY21.folderNumber, 2)
 
-        assertEquals(fileNameConverterMS11.originalFileName, "SR001MS.WAV")
-        assertEquals(fileNameConverterXY11.originalFileName, "SR001XY.WAV")
-        assertEquals(fileNameConverterMS21.originalFileName, "SR001MS.WAV")
-        assertEquals(fileNameConverterXY21.originalFileName, "SR001XY.WAV")
+        assertEquals(fileNameConverterMS11.nameWithoutExtension, "SR001MS")
+        assertEquals(fileNameConverterXY11.nameWithoutExtension, "SR001XY")
+        assertEquals(fileNameConverterMS21.nameWithoutExtension, "SR001MS")
+        assertEquals(fileNameConverterXY21.nameWithoutExtension, "SR001XY")
         assertEquals(fileNameConverterMS11.year, 2019)
         assertEquals(fileNameConverterMS11.month, 5)
         assertEquals(fileNameConverterMS11.day, 1)
         assertEquals(fileNameConverterMS11.hour, 2)
         assertEquals(fileNameConverterMS11.minute, 3)
         assertEquals(fileNameConverterMS11.second, 4)
+        assertEquals(fileNameConverterMS11.directoryName, "20190501")
 
 
     }
