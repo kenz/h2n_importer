@@ -1,6 +1,9 @@
 package test
 
-import main.FileNameConverter
+import main.fileName.FileNameConverter
+import main.fileName.MicType
+import main.fileName.directoryNameString
+import main.fileName.fileNameString
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -25,7 +28,7 @@ internal class FileNameConverterTest {
         assertTrue(targetFileMS11File.mkdirs())
 
         val cal = Calendar.getInstance()
-        cal.set(2019, 5,1, 2,3,4)
+        cal.set(2019, 5, 1, 2, 3, 4)
         targetFileMS11File.createNewFile()
         assertTrue(targetFileMS11File.exists())
         assertTrue(targetFileMS11File.setLastModified(cal.timeInMillis))
@@ -34,15 +37,11 @@ internal class FileNameConverterTest {
         val fileNameConverterMS21 = FileNameConverter(targetFileMS21File)
         val fileNameConverterXY21 = FileNameConverter(targetFileXY21File)
 
-        assertTrue(fileNameConverterMS11.inMic)
-        assertFalse(fileNameConverterMS11.outMic)
-        assertFalse(fileNameConverterXY11.inMic)
-        assertTrue(fileNameConverterXY11.outMic)
+        assertEquals(fileNameConverterMS11.mic, MicType.In)
+        assertEquals(fileNameConverterXY11.mic, MicType.Out)
 
-        assertTrue(fileNameConverterMS21.inMic)
-        assertFalse(fileNameConverterMS21.outMic)
-        assertFalse(fileNameConverterXY21.inMic)
-        assertTrue(fileNameConverterXY21.outMic)
+        assertEquals(fileNameConverterMS21.mic, MicType.In)
+        assertEquals(fileNameConverterXY21.mic, MicType.Out)
 
         assertEquals(fileNameConverterMS11.folderNumber, 1)
         assertEquals(fileNameConverterXY11.folderNumber, 1)
@@ -53,13 +52,8 @@ internal class FileNameConverterTest {
         assertEquals(fileNameConverterXY11.nameWithoutExtension, "SR001XY")
         assertEquals(fileNameConverterMS21.nameWithoutExtension, "SR001MS")
         assertEquals(fileNameConverterXY21.nameWithoutExtension, "SR001XY")
-        assertEquals(fileNameConverterMS11.year, 2019)
-        assertEquals(fileNameConverterMS11.month, 5)
-        assertEquals(fileNameConverterMS11.day, 1)
-        assertEquals(fileNameConverterMS11.hour, 2)
-        assertEquals(fileNameConverterMS11.minute, 3)
-        assertEquals(fileNameConverterMS11.second, 4)
-        assertEquals(fileNameConverterMS11.directoryName, "20190501")
+        assertEquals(fileNameConverterMS11.updatedDate.fileNameString(), "20190501_020304")
+        assertEquals(fileNameConverterMS11.directoryName, "2019-05-01")
 
 
     }

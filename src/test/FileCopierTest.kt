@@ -1,13 +1,11 @@
 package test
 
 import main.FileCopier
-import main.FileNameConverter
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
 import java.nio.file.Path
-import java.util.*
 
 internal class FileCopierTest {
     @Test
