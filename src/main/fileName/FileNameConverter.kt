@@ -4,11 +4,11 @@ import java.io.File
 import java.nio.file.Path
 import java.util.*
 
-class FileNameConverter(file: File) {
+class FileNameConverter(val file: File) {
     /**
      * bar when /foo/bar.wav
      */
-    private val nameWithoutExtension: String = file.nameWithoutExtension
+    val nameWithoutExtension: String = file.nameWithoutExtension
 
     /**
      * 2 when FOLDER02
@@ -58,12 +58,22 @@ class FileNameConverter(file: File) {
         }
     }
 
-    fun getFileName(extension: Extension): String {
-        return "%s%s.%s".format(
-            updatedDate.fileNameString(),
-            mic.fileNameString(),
-            extension.name.toLowerCase()
-        )
+    fun getFullPath(parentDir: Path, extension: Extension): Path =
+        parentDir.resolve(directoryName).resolve(getFileName(extension))
+
+
+    fun getFileName(extension: Extension?): String {
+        return if (extension == null)
+            "%s%s".format(
+                updatedDate.fileNameString(),
+                mic.fileNameString()
+            )
+        else
+            "%s%s.%s".format(
+                updatedDate.fileNameString(),
+                mic.fileNameString(),
+                extension.name.toLowerCase()
+            )
     }
 
     companion object {

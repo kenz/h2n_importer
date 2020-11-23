@@ -1,7 +1,9 @@
 package main
 
+import main.fileName.Extension
 import main.fileName.FileNameConverter
 import java.io.File
+import java.nio.file.Path
 
 
 class FileCopier {
@@ -15,10 +17,36 @@ class FileCopier {
         val fileInfoList = files.map { FileNameConverter(it) }
         fileInfoList.forEach {
             it.directoryName = makeDir(outputDir, it.directoryName)
+            val copyToPath = getCopyToPath(outputDir.toPath(), it)
+            it.file.copyTo(copyToPath.toFile(), overwrite = false)
         }
-        //todo: Copy file
+
 
     }
+
+    private fun isExistFile(parentDir:Path,file:FileNameConverter): Boolean {
+        return Extension.values().firstOrNull {
+            file.getFullPath(parentDir, it).toFile().exists()
+        }?.let { true } ?: false
+    }
+
+    private fun getCopyToPath(
+        parentDir:Path,
+        file:FileNameConverter,
+        index: Int? = null
+    ): Path {
+        val nameWithoutExtensionWithNumber =
+            if (index == null)
+                file.getFileName(null)
+            else
+                "%s (%d)".format(file.getFileName(null), index)
+
+        return if (isExistFile(parentDir, file))
+            getCopyToPath(parentDir, file, (index ?: 1) + 1)
+        else
+            return parentDir.resolve(file.directoryName).resolve("%s.%s".format(nameWithoutExtensionWithNumber,Extension.Wav.name.toLowerCase()))
+    }
+
 
     /**
      * Make directory if it is not existed
@@ -48,7 +76,7 @@ class FileCopier {
             dir.mkdirs()
             return childDir
         } else if (dir.isFile) {
-            return makeDirIndex(parentDir, dirName, (index ?: 0) + 1)
+            return makeDirIndex(parentDir, dirName, (index ?: 1) + 1)
         }
         return childDir
     }
