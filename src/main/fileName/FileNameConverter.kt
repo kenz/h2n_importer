@@ -11,7 +11,7 @@ class FileNameConverter(file: File) {
     private val nameWithoutExtension: String = file.nameWithoutExtension
 
     /**
-     * 2 when 2020-05-01 (2)
+     * 2 when FOLDER02
      */
     private val directoryNumber: Int
 
