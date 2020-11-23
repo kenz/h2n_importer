@@ -5,7 +5,7 @@ enum class MicType {
 
     fun fileNameString(): String = when (this) {
         UnKnown -> ""
-        else -> name
+        else -> name.toLowerCase()
     }
 
     companion object {
