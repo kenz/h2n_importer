@@ -62,18 +62,9 @@ class FileNameConverter(file: File) {
         return "%s%s.%s".format(
             updatedDate.fileNameString(),
             mic.fileNameString(),
-            extension.name
+            extension.name.toLowerCase()
         )
     }
-
-    fun getPath(parentDir: Path, extension: Extension) {
-        parentDir.resolve(getFileName(extension))
-    }
-
-    private fun getPath(parentDir: Path, index: Int? = null) {
-
-    }
-
 
     companion object {
         private val NOT_NUMBER_REGEX = Regex("[^0-9]")
