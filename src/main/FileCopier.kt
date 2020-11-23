@@ -45,7 +45,7 @@ class FileCopier {
         val childDir = if (index == null) dirName else "$dirName ($index)"
         val dir = parentDir.resolve(childDir)
         if (!dir.exists()) {
-            dir.mkdir()
+            dir.mkdirs()
             return childDir
         } else if (dir.isFile) {
             return makeDirIndex(parentDir, dirName, (index ?: 0) + 1)

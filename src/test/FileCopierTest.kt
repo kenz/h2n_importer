@@ -1,6 +1,7 @@
 package test
 
 import main.FileCopier
+import main.fileName.FileNameConverter
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -81,6 +82,29 @@ internal class FileCopierTest {
         val numberFolder2 = testDir.resolve("test1 (2)")
         assertTrue(numberFolder2.toFile().exists())
         assertTrue(numberFolder2.toFile().isDirectory)
+    }
+
+    @Test
+    fun testCopyDefault(@TempDir dir: Path){
+        val local = dir.resolve("local")
+        val target=FileCopier()
+
+        val sauceFiles = createTestSauceData(dir)
+        target.copyFiles(sauceFiles, local.toFile())
+        val toFolder1 = local.resolve("2019-05-01")
+        val toFolder2 = local.resolve("2019-10-12")
+        assertTrue(toFolder1.toFile().exists())
+        assertTrue(toFolder2.toFile().exists())
+        assertTrue(toFolder1.toFile().isDirectory)
+        assertTrue(toFolder2.toFile().isDirectory)
+        val toFileIn1 = toFolder1.resolve("20190501_020304in.wav")
+        val toFileOut1 = toFolder1.resolve("20190501_020304out.wav")
+        val toFileIn2 = toFolder1.resolve("20191012_131415in.wav")
+        val toFileOut2 = toFolder1.resolve("20191012_131415out.wav")
+        assertTrue(toFileIn1.toFile().exists())
+        assertTrue(toFileOut1.toFile().exists())
+        assertTrue(toFileIn2.toFile().isFile)
+        assertTrue(toFileOut2.toFile().isFile)
     }
 
 
