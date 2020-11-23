@@ -61,7 +61,10 @@ internal class FileNameConverterTest {
         dateFolder.toFile().mkdir()
         dateFolder.resolve("20190501_020304in.wav").toFile().createNewFile()
         assertEquals(fileNameConverterMS11.getFileName(Extension.Wav),"20190501_020304in (1).wav")
+        assertEquals(fileNameConverterXY11.getFileName(Extension.Wav),"20190501_020304out (1).wav")
 
+        assertEquals(fileNameConverterMS21.getFileName(Extension.Wav),"20191012_131415in.wav")
+        assertEquals(fileNameConverterXY21.getFileName(Extension.Wav),"20191012_131415out.wav")
 
     }
 
