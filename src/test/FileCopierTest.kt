@@ -93,6 +93,86 @@ internal class FileCopierTest {
         target.copyFiles(sauceFiles, local.toFile())
         val toFolder1 = local.resolve("2019-05-01")
         val toFolder2 = local.resolve("2019-10-12")
+        val toFileIn1 = toFolder1.resolve("20190501_020304in.wav")
+        val toFileOut1 = toFolder1.resolve("20190501_020304out.wav")
+        val toFileIn2 = toFolder1.resolve("20191012_131415in.wav")
+        val toFileOut2 = toFolder1.resolve("20191012_131415out.wav")
+        assertTrue(toFolder1.toFile().exists())
+        assertTrue(toFolder2.toFile().exists())
+        assertTrue(toFolder1.toFile().isDirectory)
+        assertTrue(toFolder2.toFile().isDirectory)
+        assertTrue(toFileIn1.toFile().exists())
+        assertTrue(toFileOut1.toFile().exists())
+        assertTrue(toFileIn2.toFile().isFile)
+        assertTrue(toFileOut2.toFile().isFile)
+    }
+
+    @Test
+    fun testCopyExistDirectory(@TempDir dir: Path){
+        val local = dir.resolve("local")
+        val target=FileCopier()
+
+        val sauceFiles = createTestSauceData(dir)
+        val toFolder1 = local.resolve("2019-05-01")
+        val existFile = local.resolve("2019-10-12")
+        val toFolder2 = local.resolve("2019-10-12 (1)")
+        toFolder1.toFile().mkdirs()
+        existFile.toFile().createNewFile()
+        val toFileIn1 = toFolder1.resolve("20190501_020304in.wav")
+        val toFileOut1 = toFolder1.resolve("20190501_020304out.wav")
+        val toFileIn2 = toFolder1.resolve("20191012_131415in.wav")
+        val toFileOut2 = toFolder1.resolve("20191012_131415out.wav")
+
+        target.copyFiles(sauceFiles, local.toFile())
+        assertTrue(toFolder1.toFile().exists())
+        assertTrue(toFolder2.toFile().exists())
+        assertTrue(toFolder1.toFile().isDirectory)
+        assertTrue(toFolder2.toFile().isDirectory)
+
+        assertTrue(toFileIn1.toFile().exists())
+        assertTrue(toFileOut1.toFile().exists())
+        assertTrue(toFileIn2.toFile().isFile)
+        assertTrue(toFileOut2.toFile().isFile)
+    }
+
+    @Test
+    fun testCopyExistDirectory2(@TempDir dir: Path){
+        val local = dir.resolve("local")
+        val target=FileCopier()
+
+        val sauceFiles = createTestSauceData(dir)
+        val toFolder1 = local.resolve("2019-05-01")
+        val existFile1 = local.resolve("2019-10-12")
+        val existFile2 = local.resolve("2019-10-12 (1)")
+        val toFolder2 = local.resolve("2019-10-12 (2)")
+        toFolder1.toFile().mkdirs()
+        existFile1.toFile().createNewFile()
+        existFile2.toFile().createNewFile()
+        assertTrue(toFolder2.toFile().isDirectory)
+        val toFileIn1 = toFolder1.resolve("20190501_020304in.wav")
+        val toFileOut1 = toFolder1.resolve("20190501_020304out.wav")
+        val toFileIn2 = toFolder1.resolve("20191012_131415in.wav")
+        val toFileOut2 = toFolder1.resolve("20191012_131415out.wav")
+
+        target.copyFiles(sauceFiles, local.toFile())
+
+        assertTrue(toFolder1.toFile().exists())
+        assertTrue(toFolder2.toFile().exists())
+        assertTrue(toFolder1.toFile().isDirectory)
+        assertTrue(toFileIn1.toFile().exists())
+        assertTrue(toFileOut1.toFile().exists())
+        assertTrue(toFileIn2.toFile().isFile)
+        assertTrue(toFileOut2.toFile().isFile)
+    }
+    @Test
+    fun testCopyExistFile(@TempDir dir: Path){
+        val local = dir.resolve("local")
+        val target=FileCopier()
+
+        val sauceFiles = createTestSauceData(dir)
+        target.copyFiles(sauceFiles, local.toFile())
+        val toFolder1 = local.resolve("2019-05-01")
+        val toFolder2 = local.resolve("2019-10-12")
         assertTrue(toFolder1.toFile().exists())
         assertTrue(toFolder2.toFile().exists())
         assertTrue(toFolder1.toFile().isDirectory)
@@ -106,7 +186,6 @@ internal class FileCopierTest {
         assertTrue(toFileIn2.toFile().isFile)
         assertTrue(toFileOut2.toFile().isFile)
     }
-
 
     private fun createTestFile(dir: Path): Path {
         // create /4CH/FOLDER01/
