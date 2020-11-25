@@ -12,10 +12,10 @@ internal class FileNameConverterTest {
     fun testFileName(@TempDir dir: Path) {
 
         val sauceFiles = createTestSauceData(dir)
-        val fileNameConverterMS11 = FileCopyInfo(sauceFiles[0])
-        val fileNameConverterXY11 = FileCopyInfo(sauceFiles[1])
-        val fileNameConverterMS21 = FileCopyInfo(sauceFiles[2])
-        val fileNameConverterXY21 = FileCopyInfo(sauceFiles[3])
+        val fileNameConverterMS11 = FileCopyOrder(sauceFiles[0])
+        val fileNameConverterXY11 = FileCopyOrder(sauceFiles[1])
+        val fileNameConverterMS21 = FileCopyOrder(sauceFiles[2])
+        val fileNameConverterXY21 = FileCopyOrder(sauceFiles[3])
 
         assertEquals(fileNameConverterMS11.forceGetValue("mic"), MicType.In)
         assertEquals(fileNameConverterXY11.forceGetValue("mic"), MicType.Out)

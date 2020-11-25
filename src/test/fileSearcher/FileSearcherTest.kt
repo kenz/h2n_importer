@@ -1,14 +1,15 @@
-package test
+package test.fileSearcher
 
-import main.FileSearcher
+import main.fileSearcher.AudioFileKey
+import main.fileSearcher.FileSearcher
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
-import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 
 internal class FileSearcherTest {
+
 
     @Test
     fun testFindFiles(@TempDir dir: Path) {
@@ -34,15 +35,13 @@ internal class FileSearcherTest {
         val ignoreFileXY1 = folder1.resolve("RR001XY.WAV")
         Files.createFile(ignoreFileMS1)
         Files.createFile(ignoreFileXY1)
-        val actual = ArrayList<File>()
-        actual.add(targetFileMS11.toFile())
-        actual.add(targetFileXY11.toFile())
-        actual.add(targetFileMS12.toFile())
-        actual.add(targetFileXY12.toFile())
-        actual.add(targetFileMS21.toFile())
-        actual.add(targetFileXY21.toFile())
+        val actual = HashMap<AudioFileKey, Set<Path>>()
+        actual[AudioFileKey(folder1, "SR001")] = setOf(targetFileMS11, targetFileXY11)
+        actual[AudioFileKey(folder1, "SR002")] = setOf(targetFileMS12, targetFileXY12)
+        actual[AudioFileKey(folder2, "SR001")] = setOf(targetFileMS21, targetFileXY21)
 
         val fileSearcher = FileSearcher()
-        assertIterableEquals(fileSearcher.find(dir.toFile()), actual);
+        val result = fileSearcher.find(dir)
+        assertEquals(result, actual)
     }
 }

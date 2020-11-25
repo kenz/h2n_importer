@@ -1,7 +1,6 @@
 package main
 
-import main.fileName.Extension
-import main.fileName.FileCopyInfo
+import main.fileName.FileCopyOrder
 import java.io.File
 import java.nio.file.Path
 
@@ -14,33 +13,39 @@ class FileCopier {
      *
      */
     fun copyFiles(files: List<File>, outputDir: File) {
-        val fileInfoList = files.map { FileCopyInfo(it) }
+        val fileInfoList = files.map { FileCopyOrder(it) }
         fileInfoList.forEach {
             it.copyToDirectoryName = makeDir(outputDir, it.copyToDirectoryName)
-            val copyToPath = getCopyToPath(outputDir.toPath(), it)
-            it.originalFile.copyTo(copyToPath.toFile(), overwrite = false)
+            val copyToPath = getCopyToName(outputDir.toPath(), it)
+
         }
 
 
     }
 
-    private fun isExistFile(parentDir: Path, file: FileCopyInfo, index:Int?): Boolean {
-        return Extension.values().firstOrNull {
-            file.getScheduledCopyToFullPath(parentDir, index, it).toFile().exists()
+    private fun isExistFile(parentDir: Path, file: FileCopyOrder, index:Int?): Boolean {
+        return file.getReservedCopyToFullPathList(parentDir, index).firstOrNull{
+            it.toFile().exists()
         }?.let { true } ?: false
     }
 
-    private fun getCopyToPath(
+    private fun getCopyToName(
         parentDir: Path,
-        file: FileCopyInfo,
+        file: FileCopyOrder,
         index: Int? = null
-    ): Path {
-        val nameWithoutExtensionWithNumber = file.getFileName(index, null)
-        return if (isExistFile(parentDir, file, index))
-            getCopyToPath(parentDir, file, (index ?: 1) + 1)
-        else
-            return parentDir.resolve(file.copyToDirectoryName)
-                .resolve("%s.%s".format(nameWithoutExtensionWithNumber, Extension.Wav.name.toLowerCase()))
+    ): String{
+        return when {
+            isExistFile(parentDir, file, index) -> {
+                getCopyToName(parentDir, file, (index ?: 1) + 1)
+            }
+            index == null -> {
+                ""
+            }
+            else -> {
+                parentDir.resolve("%s (%d)").toString()
+            }
+        }
+
     }
 
 

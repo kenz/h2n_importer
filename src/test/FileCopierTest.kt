@@ -8,39 +8,6 @@ import java.io.File
 import java.nio.file.Path
 
 internal class FileCopierTest {
-    @Test
-    fun testCreateDirExistDirectory(@TempDir dir: Path) {
-        val testDir = createTestFile(dir)
-        val existFolder = testDir.resolve("test1")
-        existFolder.toFile().mkdir()
-
-        // Did not make directory when it is already existed
-        val targetFolder = testDir.resolve("test1")
-        val target = FileCopier()
-        target.makeDir(testDir.toFile(), "test1")
-        assertTrue(targetFolder.toFile().exists())
-        assertTrue(targetFolder.toFile().isDirectory)
-
-        val numberFolder = testDir.resolve("test1 (1)")
-        assertFalse(numberFolder.toFile().exists())
-        assertFalse(numberFolder.toFile().isDirectory)
-    }
-
-    @Test
-    fun testCreateDirNotExistDirectory(@TempDir dir: Path) {
-        val testDir = createTestFile(dir)
-
-        // make new directory when it is not existed
-        val targetFolder = testDir.resolve("test1")
-        val target = FileCopier()
-        assertEquals(target.makeDir(testDir.toFile(), "test1"),"test1")
-        assertTrue(targetFolder.toFile().exists())
-        assertTrue(targetFolder.toFile().isDirectory)
-
-        val numberFolder = testDir.resolve("test1 (1)")
-        assertFalse(numberFolder.toFile().exists())
-        assertFalse(numberFolder.toFile().isDirectory)
-    }
 
     @Test
     fun testCreateDirExistFile(@TempDir dir: Path) {
