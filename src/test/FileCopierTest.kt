@@ -1,6 +1,6 @@
 package test
 
-import main.FileCopier
+import main.fileCopy.FileCopier
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -53,7 +53,7 @@ internal class FileCopierTest {
     @Test
     fun testCopyDefault(@TempDir dir: Path){
         val local = dir.resolve("local")
-        val target=FileCopier()
+        val target= FileCopier()
 
         val sauceFiles = createTestSauceData(dir)
         target.copyFiles(sauceFiles, local.toFile())
@@ -76,7 +76,7 @@ internal class FileCopierTest {
     @Test
     fun testCopyExistDirectory(@TempDir dir: Path){
         val local = dir.resolve("local")
-        val target=FileCopier()
+        val target= FileCopier()
 
         val sauceFiles = createTestSauceData(dir)
         val toFolder1 = local.resolve("2019-05-01")
@@ -104,7 +104,7 @@ internal class FileCopierTest {
     @Test
     fun testCopyExistDirectory2(@TempDir dir: Path){
         val local = dir.resolve("local")
-        val target=FileCopier()
+        val target= FileCopier()
 
         val sauceFiles = createTestSauceData(dir)
         val toFolder1 = local.resolve("2019-05-01")
@@ -136,7 +136,7 @@ internal class FileCopierTest {
     @Test
     fun testCopyExistFile(@TempDir dir: Path){
         val local = dir.resolve("local")
-        val target=FileCopier()
+        val target= FileCopier()
 
         val sauceFiles = createTestSauceData(dir)
         val toFolder1 = local.resolve("2019-05-01")

@@ -1,4 +1,4 @@
-package main
+package main.fileCopy
 
 import main.fileName.FileCopyOrder
 import java.io.File

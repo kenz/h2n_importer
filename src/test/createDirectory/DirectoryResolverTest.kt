@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import test.forceGetFunction
 import java.io.File
 import java.nio.file.Path
 import kotlin.test.assertEquals
@@ -19,7 +20,8 @@ class DirectoryResolverTest {
 
         // Did not make directory when it is already existed
         val target = DirectoryResolver()
-        val resolvedPath = target.directoryResolve(existFolder)
+        val resolvedPath:Path = target.directoryResolve(existFolder)
+
         assertEquals(resolvedPath, existFolder)
         assertTrue(resolvedPath.toFile().exists())
         assertTrue(resolvedPath.toFile().isDirectory)
@@ -32,7 +34,8 @@ class DirectoryResolverTest {
 
         //  make directory when directory is nothing
         val target = DirectoryResolver()
-        val resolvedPath = target.directoryResolve(targetFolder)
+        val resolvedPath:Path = target.directoryResolve(targetFolder)
+
         assertEquals(resolvedPath, targetFolder)
         assertTrue(resolvedPath.toFile().exists())
         assertTrue(resolvedPath.toFile().isDirectory)
@@ -46,7 +49,8 @@ class DirectoryResolverTest {
 
         // Make new directory when already existed FILE
         val target = DirectoryResolver()
-        val resolvedPath = target.directoryResolve(existFolder)
+
+        val resolvedPath:Path = target.directoryResolve(existFolder)
 
         val createdDirectory = testDir.resolve("test (1)")
         assertEquals(resolvedPath, createdDirectory)
@@ -63,8 +67,8 @@ class DirectoryResolverTest {
         existedFile1.toFile().createNewFile()
         // Make new directory when already existed FILE
         val target = DirectoryResolver()
-        val resolvedPath = target.directoryResolve(existedFile)
 
+        val resolvedPath:Path = target.directoryResolve(existedFile)
         val createdDirectory = testDir.resolve("test (2)")
         assertEquals(resolvedPath, createdDirectory)
         assertTrue(createdDirectory.toFile().exists())
