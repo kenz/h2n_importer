@@ -1,7 +1,6 @@
 package test
 
 import main.FileCopier
-import main.fileName.FileNameConverter
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -148,19 +147,21 @@ internal class FileCopierTest {
         toFolder1.toFile().mkdirs()
         existFile1.toFile().createNewFile()
         existFile2.toFile().createNewFile()
-        assertTrue(toFolder2.toFile().isDirectory)
         val toFileIn1 = toFolder1.resolve("20190501_020304in.wav")
         val toFileOut1 = toFolder1.resolve("20190501_020304out.wav")
-        val toFileIn2 = toFolder1.resolve("20191012_131415in.wav")
-        val toFileOut2 = toFolder1.resolve("20191012_131415out.wav")
+        val toFileIn2 = toFolder2.resolve("20191012_131415in.wav")
+        val toFileOut2 = toFolder2.resolve("20191012_131415out.wav")
 
         target.copyFiles(sauceFiles, local.toFile())
 
         assertTrue(toFolder1.toFile().exists())
         assertTrue(toFolder2.toFile().exists())
         assertTrue(toFolder1.toFile().isDirectory)
+        assertTrue(toFolder2.toFile().isDirectory)
         assertTrue(toFileIn1.toFile().exists())
         assertTrue(toFileOut1.toFile().exists())
+        assertTrue(toFileIn2.toFile().exists())
+        assertTrue(toFileOut2.toFile().exists())
         assertTrue(toFileIn2.toFile().isFile)
         assertTrue(toFileOut2.toFile().isFile)
     }
@@ -174,15 +175,16 @@ internal class FileCopierTest {
         val toFolder1 = local.resolve("2019-05-01")
         val toFolder2 = local.resolve("2019-10-12")
         val existWavFile = toFolder1.resolve("20190501_020304in.wav")
-        val existAacFile = toFolder1.resolve("20191012_131415out.aac")
+        val existAacFile = toFolder2.resolve("20191012_131415out.aac")
         toFolder1.toFile().mkdirs()
+        toFolder2.toFile().mkdirs()
         existWavFile.toFile().createNewFile()
         existAacFile.toFile().createNewFile()
-        
+
         val toFileIn1 = toFolder1.resolve("20190501_020304in (2).wav")
         val toFileOut1 = toFolder1.resolve("20190501_020304out (2).wav")
-        val toFileIn2 = toFolder1.resolve("20191012_131415in (2).wav")
-        val toFileOut2 = toFolder1.resolve("20191012_131415out (2).wav")
+        val toFileIn2 = toFolder2.resolve("20191012_131415in (2).wav")
+        val toFileOut2 = toFolder2.resolve("20191012_131415out (2).wav")
 
         assertTrue(toFolder1.toFile().exists())
         assertTrue(toFolder2.toFile().exists())

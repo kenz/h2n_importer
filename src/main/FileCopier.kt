@@ -1,7 +1,7 @@
 package main
 
 import main.fileName.Extension
-import main.fileName.FileNameConverter
+import main.fileName.FileCopyInfo
 import java.io.File
 import java.nio.file.Path
 
@@ -14,37 +14,33 @@ class FileCopier {
      *
      */
     fun copyFiles(files: List<File>, outputDir: File) {
-        val fileInfoList = files.map { FileNameConverter(it) }
+        val fileInfoList = files.map { FileCopyInfo(it) }
         fileInfoList.forEach {
-            it.directoryName = makeDir(outputDir, it.directoryName)
+            it.copyToDirectoryName = makeDir(outputDir, it.copyToDirectoryName)
             val copyToPath = getCopyToPath(outputDir.toPath(), it)
-            it.file.copyTo(copyToPath.toFile(), overwrite = false)
+            it.originalFile.copyTo(copyToPath.toFile(), overwrite = false)
         }
 
 
     }
 
-    private fun isExistFile(parentDir:Path,file:FileNameConverter): Boolean {
+    private fun isExistFile(parentDir: Path, file: FileCopyInfo, index:Int?): Boolean {
         return Extension.values().firstOrNull {
-            file.getFullPath(parentDir, it).toFile().exists()
+            file.getScheduledCopyToFullPath(parentDir, index, it).toFile().exists()
         }?.let { true } ?: false
     }
 
     private fun getCopyToPath(
-        parentDir:Path,
-        file:FileNameConverter,
+        parentDir: Path,
+        file: FileCopyInfo,
         index: Int? = null
     ): Path {
-        val nameWithoutExtensionWithNumber =
-            if (index == null)
-                file.getFileName(null)
-            else
-                "%s (%d)".format(file.getFileName(null), index)
-
-        return if (isExistFile(parentDir, file))
+        val nameWithoutExtensionWithNumber = file.getFileName(index, null)
+        return if (isExistFile(parentDir, file, index))
             getCopyToPath(parentDir, file, (index ?: 1) + 1)
         else
-            return parentDir.resolve(file.directoryName).resolve("%s.%s".format(nameWithoutExtensionWithNumber,Extension.Wav.name.toLowerCase()))
+            return parentDir.resolve(file.copyToDirectoryName)
+                .resolve("%s.%s".format(nameWithoutExtensionWithNumber, Extension.Wav.name.toLowerCase()))
     }
 
 
