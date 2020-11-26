@@ -18,8 +18,7 @@ import kotlin.test.assertEquals
 class DirectoryResolverTest {
 
     @Test
-    fun testDirectoryCreate(@TempDir dir:Path){
-
+    fun testDirectoryCreateMSOnly(@TempDir dir:Path){
         val fourCh = dir.resolve("4CH")
         val local = dir.resolve("local")
         local.toFile().mkdirs()
@@ -43,7 +42,39 @@ class DirectoryResolverTest {
         assertTrue(outputDayDir.isDirectory)
         assertEquals(resultReport.outputDir, outputDayDir.toPath())
         assertEquals(resultReport.sauceFiles,fileSet11)
-
+    }
+    @Test
+    fun testDirectoryCreateMSXY(@TempDir dir:Path){
+        val fourCh = dir.resolve("4CH")
+        val local = dir.resolve("local")
+        local.toFile().mkdirs()
+        val folder1 = fourCh.resolve("FOLDER01")
+        Files.createDirectory(fourCh)
+        Files.createDirectory(folder1)
+        val targetMS11Path = folder1.resolve("SR001MS.WAV")
+        val targetMS11File = targetMS11Path.toFile()
+        val targetXY11Path = folder1.resolve("SR001XY.WAV")
+        val targetXY11File = targetXY11Path.toFile()
+        targetMS11File.createNewFile()
+        targetMS11File.setLastModified(Calendar.getInstance().let {
+            it.set(2019, 5, 1, 2, 3, 4)
+            it.timeInMillis
+        })
+        targetXY11File.createNewFile()
+        targetXY11File.setLastModified(Calendar.getInstance().let {
+            it.set(2019, 5, 1, 2, 3, 4)
+            it.timeInMillis
+        })
+        val key = AudioFileKey(folder1, "SR001")
+        val fileSet11 = mutableSetOf(targetMS11Path, targetXY11Path)
+        val searcherReport = FileSearcherReport(fileSet11)
+        val target = DirectoryResolver()
+        val resultReport = target.directoryCreate(outputParentPath = local, key = key, fileSearcherReport = searcherReport )
+        val outputDayDir = local.resolve("2019-05-01").toFile()
+        assertTrue(outputDayDir.exists())
+        assertTrue(outputDayDir.isDirectory)
+        assertEquals(resultReport.outputDir, outputDayDir.toPath())
+        assertEquals(resultReport.sauceFiles,fileSet11)
     }
 
 
