@@ -4,7 +4,7 @@ import java.io.File
 import java.nio.file.Path
 
 class FileSearcher {
-    fun find(path: Path):HashMap<AudioFileKey, MutableSet<Path>>{
+    fun find(path: Path):FileSearcherReport{
         val h2nFilter= H2nFilter()
         val list = getFiles(path.toFile()).filter{
             h2nFilter.filter(it)
@@ -21,7 +21,7 @@ class FileSearcher {
             }
         }
 
-        return result
+        return FileSearcherReport(result)
 
     }
 

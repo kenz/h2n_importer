@@ -2,6 +2,7 @@ package test.fileSearcher
 
 import main.fileSearcher.AudioFileKey
 import main.fileSearcher.FileSearcher
+import main.fileSearcher.FileSearcherReport
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -39,9 +40,9 @@ internal class FileSearcherTest {
         actual[AudioFileKey(folder1, "SR001")] = setOf(targetFileMS11, targetFileXY11)
         actual[AudioFileKey(folder1, "SR002")] = setOf(targetFileMS12, targetFileXY12)
         actual[AudioFileKey(folder2, "SR001")] = setOf(targetFileMS21, targetFileXY21)
-
+        val act = FileSearcherReport(actual)
         val fileSearcher = FileSearcher()
         val result = fileSearcher.find(dir)
-        assertEquals(result, actual)
+        assertEquals(result, act)
     }
 }

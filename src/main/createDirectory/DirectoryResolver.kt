@@ -16,6 +16,7 @@ class DirectoryResolver {
         }
         return getNumberedDirectory(path)
     }
+
     private fun getNumberedDirectory(path:Path): Path{
         var index = 1
         while(index<Int.MAX_VALUE){
