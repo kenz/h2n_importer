@@ -1,16 +1,51 @@
 package test.createDirectory
 
 import main.createDirectory.DirectoryResolver
+import main.fileSearcher.AudioFileKey
+import main.fileSearcher.FileSearcher
+import main.fileSearcher.FileSearcherReport
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import test.forceGetFunction
 import java.io.File
+import java.nio.file.Files
 import java.nio.file.Path
+import java.util.*
 import kotlin.test.assertEquals
 
 class DirectoryResolverTest {
+
+    @Test
+    fun testDirectoryCreate(@TempDir dir:Path){
+
+        val fourCh = dir.resolve("4CH")
+        val local = dir.resolve("local")
+        local.toFile().mkdirs()
+        val folder1 = fourCh.resolve("FOLDER01")
+        Files.createDirectory(fourCh)
+        Files.createDirectory(folder1)
+        val targetMS11Path = folder1.resolve("SR001MS.WAV")
+        val targetMS11File = targetMS11Path.toFile()
+        targetMS11File.createNewFile()
+        targetMS11File.setLastModified(Calendar.getInstance().let {
+            it.set(2019, 5, 1, 2, 3, 4)
+            it.timeInMillis
+        })
+        val key = AudioFileKey(folder1, "SR001")
+        val fileSet11 = mutableSetOf(targetMS11Path)
+        val searcherReport = FileSearcherReport(fileSet11)
+        val target = DirectoryResolver()
+        val resultReport = target.directoryCreate(outputParentPath = local, key = key, fileSearcherReport = searcherReport )
+        val outputDayDir = local.resolve("2019-05-01").toFile()
+        assertTrue(outputDayDir.exists())
+        assertTrue(outputDayDir.isDirectory)
+        assertEquals(resultReport.outputDir, outputDayDir.toPath())
+        assertEquals(resultReport.sauceFiles,fileSet11)
+
+    }
+
 
     @Test
     fun testResolveDirectoryExistDirectory(@TempDir dir: Path) {
@@ -20,7 +55,7 @@ class DirectoryResolverTest {
 
         // Did not make directory when it is already existed
         val target = DirectoryResolver()
-        val resolvedPath:Path = target.directoryResolve(existFolder)
+        val resolvedPath:Path =target.forceGetFunction("directoryResolve", Path::class.java).invoke(existFolder)
 
         assertEquals(resolvedPath, existFolder)
         assertTrue(resolvedPath.toFile().exists())
@@ -34,7 +69,7 @@ class DirectoryResolverTest {
 
         //  make directory when directory is nothing
         val target = DirectoryResolver()
-        val resolvedPath:Path = target.directoryResolve(targetFolder)
+        val resolvedPath:Path =target.forceGetFunction("directoryResolve", Path::class.java).invoke(targetFolder)
 
         assertEquals(resolvedPath, targetFolder)
         assertTrue(resolvedPath.toFile().exists())
@@ -50,7 +85,7 @@ class DirectoryResolverTest {
         // Make new directory when already existed FILE
         val target = DirectoryResolver()
 
-        val resolvedPath:Path = target.directoryResolve(existFolder)
+        val resolvedPath:Path =target.forceGetFunction("directoryResolve", Path::class.java).invoke(existFolder)
 
         val createdDirectory = testDir.resolve("test (1)")
         assertEquals(resolvedPath, createdDirectory)
@@ -68,7 +103,7 @@ class DirectoryResolverTest {
         // Make new directory when already existed FILE
         val target = DirectoryResolver()
 
-        val resolvedPath:Path = target.directoryResolve(existedFile)
+        val resolvedPath:Path =target.forceGetFunction("directoryResolve", Path::class.java).invoke(existedFile)
         val createdDirectory = testDir.resolve("test (2)")
         assertEquals(resolvedPath, createdDirectory)
         assertTrue(createdDirectory.toFile().exists())
@@ -79,7 +114,7 @@ class DirectoryResolverTest {
         // create /4CH/FOLDER01/
         val fourCh = dir.resolve("4CH")
         val folder1 = fourCh.resolve("FOLDER01")
-        Assertions.assertTrue(File(folder1.toUri()).mkdirs())
+        assertTrue(File(folder1.toUri()).mkdirs())
         return folder1
     }
 }

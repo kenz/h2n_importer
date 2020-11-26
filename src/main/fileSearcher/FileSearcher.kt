@@ -4,24 +4,24 @@ import java.io.File
 import java.nio.file.Path
 
 class FileSearcher {
-    fun find(path: Path):FileSearcherReport{
+    fun find(path: Path):Map<AudioFileKey, FileSearcherReport>{
         val h2nFilter= H2nFilter()
         val list = getFiles(path.toFile()).filter{
             h2nFilter.filter(it)
         }
 
-        val result = HashMap<AudioFileKey, MutableSet<Path>>()
+        val result = HashMap<AudioFileKey, FileSearcherReport>()
         list.forEach {
             val key = AudioFileKey.createOf(it.toPath())
             val set = result[key]
             if(set == null){
-                result[key] = mutableSetOf(it.toPath())
+                result[key] = FileSearcherReport(mutableSetOf(it.toPath()))
             }else{
-                set.add(it.toPath())
+                set.addPath(it.toPath())
             }
         }
 
-        return FileSearcherReport(result)
+        return result
 
     }
 

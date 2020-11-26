@@ -36,13 +36,12 @@ internal class FileSearcherTest {
         val ignoreFileXY1 = folder1.resolve("RR001XY.WAV")
         Files.createFile(ignoreFileMS1)
         Files.createFile(ignoreFileXY1)
-        val actual = HashMap<AudioFileKey, Set<Path>>()
-        actual[AudioFileKey(folder1, "SR001")] = setOf(targetFileMS11, targetFileXY11)
-        actual[AudioFileKey(folder1, "SR002")] = setOf(targetFileMS12, targetFileXY12)
-        actual[AudioFileKey(folder2, "SR001")] = setOf(targetFileMS21, targetFileXY21)
-        val act = FileSearcherReport(actual)
+        val actual = HashMap<AudioFileKey, FileSearcherReport>()
+        actual[AudioFileKey(folder1, "SR001")] = FileSearcherReport(mutableSetOf(targetFileMS11, targetFileXY11))
+        actual[AudioFileKey(folder1, "SR002")] = FileSearcherReport(mutableSetOf(targetFileMS12, targetFileXY12))
+        actual[AudioFileKey(folder2, "SR001")] = FileSearcherReport(mutableSetOf(targetFileMS21, targetFileXY21))
         val fileSearcher = FileSearcher()
         val result = fileSearcher.find(dir)
-        assertEquals(result, act)
+        assertEquals(result, actual)
     }
 }

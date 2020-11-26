@@ -1,6 +1,5 @@
 package main.createDirectory
 
-import main.fileSearcher.AudioFileKey
 import java.nio.file.Path
 
-data class DirectoryResolverReport(val sauceFileSet :MutableSet<Path>, val outputDir:Path)
+data class DirectoryResolverReport(val sauceFiles:Set<Path>, val outputDir:Path)
